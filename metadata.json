@@ -1,0 +1,6 @@
+{
+  "name": "ChopNow",
+  "description": "Modern food ordering application for fast discovery, custom meal orders, seamless checkout, and real-time delivery tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
