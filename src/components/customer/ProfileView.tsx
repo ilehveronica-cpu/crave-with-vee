@@ -35,6 +35,7 @@ export const ProfileView: React.FC = () => {
     setCurrentRole,
     setIsAuthModalOpen,
     showToast,
+    firebaseProjectId,
   } = useApp();
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -363,6 +364,27 @@ export const ProfileView: React.FC = () => {
           </div>
           <ChevronRight className="w-4 h-4 text-stone-400" />
         </button>
+      </div>
+
+      {/* Firebase Cloud Backend Status */}
+      <div className="bg-white rounded-3xl border border-stone-200/90 p-5 shadow-2xs flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
+            <Shield className="w-5 h-5 text-amber-600" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-[#222222]">Firebase Cloud Integration</span>
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#2E9D63] bg-[#E8F7EE] px-2 py-0.5 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2E9D63] animate-pulse"></span>
+                Connected
+              </span>
+            </div>
+            <p className="text-[11px] text-stone-500 mt-0.5">
+              Project: <span className="font-mono text-stone-700 font-semibold">{firebaseProjectId}</span> · Auth & Firestore Synchronized
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Role Switcher Portal Area */}

@@ -3,7 +3,15 @@ import { Mail, Lock, User, Phone, X, ArrowRight, CheckCircle2, ShieldCheck } fro
 import { useApp } from '../../context/AppContext';
 
 export const AuthModal: React.FC = () => {
-  const { isAuthModalOpen, setIsAuthModalOpen, login, register, showToast } = useApp();
+  const {
+    isAuthModalOpen,
+    setIsAuthModalOpen,
+    loginWithGoogle,
+    loginWithEmail,
+    registerWithEmail,
+    showToast,
+    firebaseProjectId,
+  } = useApp();
 
   const [mode, setMode] = useState<'login' | 'register' | 'forgot'>('login');
   const [name, setName] = useState('');
@@ -38,31 +46,32 @@ export const AuthModal: React.FC = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
       if (mode === 'login') {
-        login(email);
+        await loginWithEmail(email, password);
       } else if (mode === 'register') {
-        register(name, email, phone);
+        await registerWithEmail(name, email, password, phone);
       } else if (mode === 'forgot') {
         setForgotSent(true);
         showToast('Password reset link sent to your email');
       }
-    }, 700);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     setIsSubmitting(true);
-    setTimeout(() => {
+    try {
+      await loginWithGoogle();
+    } finally {
       setIsSubmitting(false);
-      login('google.user@example.com', 'Google User');
-      showToast('Signed in securely with Google');
-    }, 800);
+    }
   };
 
   return (
@@ -293,7 +302,7 @@ export const AuthModal: React.FC = () => {
 
           <div className="mt-4 flex items-center justify-center gap-1.5 text-[10px] text-stone-400">
             <ShieldCheck className="w-3.5 h-3.5 text-[#2E9D63]" />
-            <span>End-to-end encrypted session & authentic customer protection</span>
+            <span>Encrypted Firebase Auth ({firebaseProjectId}) & customer security</span>
           </div>
         </div>
       </div>
